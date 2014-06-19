@@ -294,6 +294,16 @@
                      forKey:kCATransactionDisableActions];
     self.colorMapLayer.opacity = _brightness;
     [CATransaction commit];
+
+    HRHSVColor hsvColor;
+    HSVColorFromUIColor(self.color, &hsvColor);
+	hsvColor.v = _brightness;
+
+	CGFloat alpha;
+	[_color getHue:NULL saturation:NULL brightness:NULL alpha:&alpha];
+	UIColor *newColor = [UIColor colorWithHue:hsvColor.h saturation:hsvColor.s brightness:hsvColor.v alpha:alpha];
+
+	self.color = newColor;
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)sender {
@@ -368,8 +378,9 @@
     newPosition.y = (1.0f - hsvColor.s) * (1.0f / self.saturationUpperLimit.floatValue) * (CGFloat) (pixelCountY - 1) * _tileSize.floatValue + _tileSize.floatValue / 2.0f;
     colorCursorPosition.x = (int) (newPosition.x / _tileSize.floatValue) * _tileSize.floatValue;
     colorCursorPosition.y = (int) (newPosition.y / _tileSize.floatValue) * _tileSize.floatValue;
+
     _colorCursor.color = self.color;
-    _colorCursor.transform = CGAffineTransformMakeTranslation(colorCursorPosition.x, colorCursorPosition.y);
+	_colorCursor.transform = CGAffineTransformMakeTranslation(colorCursorPosition.x, colorCursorPosition.y);
 }
 
 @end
