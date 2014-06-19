@@ -332,6 +332,9 @@
     CGFloat pixelX = (int) ((tapPoint.x) / _tileSize.floatValue) / (CGFloat) pixelCountX; // X(色相)
     CGFloat pixelY = (int) ((tapPoint.y) / _tileSize.floatValue) / (CGFloat) (pixelCountY - 1); // Y(彩度)
 
+	CGFloat alpha;
+	[_color getHue:NULL saturation:NULL brightness:NULL alpha:&alpha];
+
     HRHSVColor selectedHSVColor;
     selectedHSVColor.h = pixelX;
     selectedHSVColor.s = 1.0f - (pixelY * self.saturationUpperLimit.floatValue);
@@ -341,7 +344,7 @@
     selectedColor = [UIColor colorWithHue:selectedHSVColor.h
                                saturation:selectedHSVColor.s
                                brightness:selectedHSVColor.v
-                                    alpha:1.0];
+                                    alpha:alpha];
     _color = selectedColor;
     [self updateColorCursor];
     [self sendActionsForControlEvents:UIControlEventValueChanged];
